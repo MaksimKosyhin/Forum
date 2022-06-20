@@ -12,8 +12,6 @@ public class ForumApplication {
 		//Is resolved by when added rest dependency (mabe because jvm runs constantly this way)
 		
 		//I'm not sure I correctly configured db properties
-		//TODO: set relations between jpa classes
-		//TODO: check if I can set File type for img_location field in Comments
 		//TODO: know what constructors/getters/setters are needed for model
 		SpringApplication.run(ForumApplication.class, args);
 	}

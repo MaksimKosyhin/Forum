@@ -13,6 +13,8 @@ public class ForumApplication {
 		
 		//I'm not sure I correctly configured db properties
 		//TODO: know what constructors/getters/setters are needed for model
+		//TODO: refactor discussion class
+		//TODO: check db entries are stored in order by id
 		SpringApplication.run(ForumApplication.class, args);
 	}
 

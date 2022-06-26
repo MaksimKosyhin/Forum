@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,15 +26,14 @@ public class Theme {
 	@OneToMany
 	@JoinColumn(name = "theme_id", referencedColumnName = "id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Set<Discussion> discussions;
+	private List<Discussion> discussions = new ArrayList<>();
 
 	public Theme() {
 		
 	}
 	
-	public Theme(String title, Set<Discussion> discussions) {
+	public Theme(String title) {
 		this.title = title;
-		this.discussions = discussions;
 	}
 
 	public long getId() {
@@ -47,13 +48,13 @@ public class Theme {
 		this.title = title;
 	}
 	
-	public Set<Discussion> getDiscussions() {
+	public List<Discussion> getDiscussions() {
 		return discussions;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(discussions, id, title);
+		return Objects.hash(id, title);
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class Theme {
 		if (getClass() != obj.getClass())
 			return false;
 		Theme other = (Theme) obj;
-		return Objects.equals(discussions, other.discussions) && id == other.id && Objects.equals(title, other.title);
+		return id == other.id && Objects.equals(title, other.title);
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package com.example.demo.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -25,7 +28,7 @@ public class Comment {
 	private String img_location;
 
 	@ManyToMany
-	private Set<Comment> comments;
+	private List<Comment> comments = new ArrayList<>();
 	
 	public Comment() {}
 	
@@ -34,11 +37,19 @@ public class Comment {
 		this.msg = msg;
 		this.img_location = img_location;
 	}
+	
+	public List<Comment> getComments() {
+		return comments;
+	}
 
 	public long getId() {
 		return id;
 	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	public Timestamp getTs() {
 		return ts;
 	}
@@ -65,7 +76,7 @@ public class Comment {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(comments, id, img_location, msg, ts);
+		return Objects.hash(id, img_location, msg, ts);
 	}
 
 	@Override
@@ -77,14 +88,12 @@ public class Comment {
 		if (getClass() != obj.getClass())
 			return false;
 		Comment other = (Comment) obj;
-		return Objects.equals(comments, other.comments) && id == other.id
-				&& Objects.equals(img_location, other.img_location) && Objects.equals(msg, other.msg)
+		return id == other.id && Objects.equals(img_location, other.img_location) && Objects.equals(msg, other.msg)
 				&& Objects.equals(ts, other.ts);
 	}
 
 	@Override
 	public String toString() {
-		return "Comment [id=" + id + ", ts=" + ts + ", msg=" + msg + ", img_location=" + img_location + ", comments="
-				+ comments + "]";
+		return "Comment [id=" + id + ", ts=" + ts + ", msg=" + msg + ", img_location=" + img_location;
 	}
 }

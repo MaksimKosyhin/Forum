@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,13 +23,11 @@ public class Discussion {
 	
 	private String title;
 	
-	@OneToMany
-	@JoinColumn(name = "discussion_id", referencedColumnName = "id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Set<Comment> comments = new HashSet<>();
+	private boolean discussionActive = true;
 	
 	@OneToOne
 	@JoinColumn(name = "header_comment_id", referencedColumnName = "id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Comment headerComment;
 	
 	public Discussion(){}
@@ -44,25 +41,25 @@ public class Discussion {
 		return id;
 	}
 	
+	public boolean isDiscussionActive() {
+		return discussionActive;
+	}
+
+	public void setDiscussionActive(boolean discussionActive) {
+		this.discussionActive = discussionActive;
+	}
+
 	public Comment getHeaderComment() {
 		return headerComment;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
 	
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public Set<Comment> getComments() {
-		return comments;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(comments, id, title);
+		return Objects.hash(id, title);
 	}
 
 	@Override
@@ -74,11 +71,11 @@ public class Discussion {
 		if (getClass() != obj.getClass())
 			return false;
 		Discussion other = (Discussion) obj;
-		return Objects.equals(comments, other.comments) && id == other.id && Objects.equals(title, other.title);
+		return id == other.id && Objects.equals(title, other.title);
 	}
 
 	@Override
 	public String toString() {
-		return "Discussion [id=" + id + ", title=" + title + ", comments=" + comments + "]";
+		return "Discussion [id=" + id + ", title=" + title + ", headerComment=" + headerComment + "]";
 	}
 }

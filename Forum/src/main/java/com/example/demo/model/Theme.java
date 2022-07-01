@@ -3,7 +3,6 @@ package com.example.demo.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -21,6 +21,7 @@ public class Theme {
 	@GeneratedValue(strategy = GenerationType.AUTO) 
 	private long id;
 	
+	@NotBlank(message = "theme title must not be blank")
 	private String title;
 	
 	@OneToMany

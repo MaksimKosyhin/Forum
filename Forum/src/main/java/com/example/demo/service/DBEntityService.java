@@ -2,9 +2,9 @@ package com.example.demo.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import com.example.demo.model.Comment;
+import com.example.demo.model.CommentDTO;
 import com.example.demo.model.Discussion;
 import com.example.demo.model.Theme;
 
@@ -19,7 +19,7 @@ public interface DBEntityService {
 	
 	public void addDiscussion(long themeId, String title, Comment headerComment);
 	
-	public void addCommentReply(long questionCommentId, Comment answer);
+	public void addCommentReply(CommentDTO comment);
 	
 	public void deleteTheme(long themeId);
 	

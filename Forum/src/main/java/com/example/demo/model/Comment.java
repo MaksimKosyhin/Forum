@@ -2,10 +2,8 @@ package com.example.demo.model;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +26,7 @@ public class Comment {
 	private String img_location;
 
 	@ManyToMany
-	private List<Comment> comments = new ArrayList<>();
+	private List<Comment> replies = new ArrayList<>();
 	
 	public Comment() {}
 	
@@ -38,8 +36,8 @@ public class Comment {
 		this.img_location = img_location;
 	}
 	
-	public List<Comment> getComments() {
-		return comments;
+	public List<Comment> getReplies() {
+		return replies;
 	}
 
 	public long getId() {

@@ -45,7 +45,7 @@ class RepositoryTests {
 		Comment c2 = new Comment(Timestamp.from(Instant.now()), "second comment", "");
 		
 		Discussion d1 = new Discussion("first", c1);
-		c1.getComments().add(c2);
+		c1.getReplies().add(c2);
 		
 		discussions.save(d1);
 		comments.save(c1);
@@ -69,7 +69,7 @@ class RepositoryTests {
 		
 		List<Comment> replies = discussions.findAll()
 				.stream()
-				.map(e -> e.getHeaderComment().getComments())
+				.map(e -> e.getHeaderComment().getReplies())
 				.collect(() -> new ArrayList<>(), List::addAll, List::addAll);
 		
 		//then

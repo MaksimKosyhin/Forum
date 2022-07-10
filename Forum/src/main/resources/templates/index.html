@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Forum</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1>Welcome</h1>
+    
+    <div th:each = "theme : ${themes}">
+		<p> <a th:method="GET" th:href="@{/themes/{id}(id=${theme.id})}" th:text="${theme.title}"></a> </p>
+    </div>
+    
+    <form th:method="POST" th:action="@{/themes}" th:object="${theme}">
+	    <label for="title">Enter Theme Title: </label>
+	    <input type="text" th:field="*{title}" id="title"/>
+	    <input type="submit" value="Send"/>
+	</form>
+    
+    
+    
+</body>
+</html>

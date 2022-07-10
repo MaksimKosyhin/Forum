@@ -6,6 +6,7 @@ import java.util.Map;
 import com.example.demo.model.Comment;
 import com.example.demo.model.CommentDTO;
 import com.example.demo.model.Discussion;
+import com.example.demo.model.DiscussionDTO;
 import com.example.demo.model.Theme;
 
 public interface DBEntityService {
@@ -17,9 +18,9 @@ public interface DBEntityService {
 	
 	public void addTheme(Theme theme);
 	
-	public void addDiscussion(long themeId, String title, Comment headerComment);
+	public void addDiscussion(DiscussionDTO discussion);
 	
-	public void addCommentReply(CommentDTO comment);
+	public void replyToComment(CommentDTO comment);
 	
 	public void deleteTheme(long themeId);
 	

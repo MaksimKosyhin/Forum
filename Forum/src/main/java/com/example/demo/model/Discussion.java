@@ -15,12 +15,10 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 public class Discussion {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	private String title;
-	
-	private boolean discussionActive = true;
 	
 	@OneToOne
 	@JoinColumn(name = "header_comment_id", referencedColumnName = "id")
@@ -38,25 +36,25 @@ public class Discussion {
 		return id;
 	}
 	
-	public boolean isDiscussionActive() {
-		return discussionActive;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setDiscussionActive(boolean discussionActive) {
-		this.discussionActive = discussionActive;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Comment getHeaderComment() {
 		return headerComment;
 	}
-	
-	public String getTitle() {
-		return title;
+
+	public void setHeaderComment(Comment headerComment) {
+		this.headerComment = headerComment;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title);
+		return Long.hashCode(id);
 	}
 
 	@Override
@@ -68,7 +66,7 @@ public class Discussion {
 		if (getClass() != obj.getClass())
 			return false;
 		Discussion other = (Discussion) obj;
-		return id == other.id && Objects.equals(title, other.title);
+		return id == other.id;
 	}
 
 	@Override

@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class ForumApplication {
-
 	public static void main(String[] args) {
-		//I'm not sure I correctly configured db properties
-		//TODO: know what constructors/getters/setters are needed for model
+		//TODO: refactor models' constructor/getters/setters
+		//TODO: create annotation for comments field, check for id existing in discussion
+			//cannot add the same id
 		SpringApplication.run(ForumApplication.class, args);
 	}
 

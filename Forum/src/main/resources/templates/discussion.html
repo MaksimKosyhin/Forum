@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Forum</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <div>
+    	<h2 th:text = "${discussion.title}"></h2>
+    	<p style="color: blue;" 
+    			th:text="${discussion.headerComment.id} + ' >> ' + ${discussion.headerComment.dateCreated}"></p>
+    	<p th:text="${discussion.headerComment.msg}"></p>
+    	
+    	<a th:method="GET" th:href="@{/}">Back to Themes </a>
+    </div>
+    
+    <div>
+    	<div th:each="entry : ${comments}">
+    		<p style="color: blue;" th:text="${entry.key.id} + ' >> ' + ${entry.key.dateCreated}"></p>
+    		
+    		<table>
+    			<tr th:each="respondedTo : ${entry.value}">
+    				<td>
+    					<span style="color: green;" th:text="${respondedTo}"></span>
+    				</td>
+    			</tr>
+    		</table>
+    		
+    		<p th:text="${entry.key.msg}"></p>
+    	</div>
+    </div>
+    
+    <form th:method="POST" th:action="@{/comments}" th:object="${comment}">
+    	<input type="hidden" name="discussionId" th:value="${discussion.id}"/>
+	    <label for="reply">Reply To: </label>
+	    <input type="text" th:field="*{repliedComments}" id="reply"/>
+	    </br>
+		<label for="answer">Comment: </label>
+		<textarea th:field="*{msg}" placeholder="leave a comment" id="answer"/>
+	    <input type="submit" value="Send"/>
+	</form>
+    
+</body>
+</html>

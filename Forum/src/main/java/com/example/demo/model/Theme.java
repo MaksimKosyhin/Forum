@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +17,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 public class Theme {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@NotBlank(message = "theme title must not be blank")
@@ -27,12 +26,18 @@ public class Theme {
 	@OneToMany
 	@JoinColumn(name = "theme_id", referencedColumnName = "id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Discussion> discussions = new ArrayList<>();
+	private List<Discussion> discussions;
 
 	public Theme() {
 		
 	}
 	
+	public Theme(long id, String title, List<Discussion> discussions) {
+		this.id = id;
+		this.title = title;
+		this.discussions = discussions;
+	}
+
 	public Theme(String title) {
 		this.title = title;
 	}
@@ -55,7 +60,7 @@ public class Theme {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title);
+		return Long.hashCode(id);
 	}
 
 	@Override
@@ -67,7 +72,7 @@ public class Theme {
 		if (getClass() != obj.getClass())
 			return false;
 		Theme other = (Theme) obj;
-		return id == other.id && Objects.equals(title, other.title);
+		return id == other.id;
 	}
 
 	@Override

@@ -10,10 +10,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.exception.DBEntryNotFoundException;
+import com.example.demo.config.exceptions.DBEntryNotFoundException;
 import com.example.demo.model.Comment;
 import com.example.demo.model.CommentDTO;
 import com.example.demo.model.Discussion;
+import com.example.demo.model.DiscussionDTO;
 import com.example.demo.model.Theme;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.DiscussionRepository;
@@ -47,7 +48,7 @@ public class DBEntityServiceImpl implements DBEntityService {
 		return themes.findById(themeId)
 				.orElseThrow(() -> 
 					new DBEntryNotFoundException("theme with id: %d was not found"
-							.formatted(themeId)));
+						.formatted(themeId)));
 	}
 
 	@Override
@@ -64,27 +65,34 @@ public class DBEntityServiceImpl implements DBEntityService {
 	}
 	
 	@Override
-	public void addDiscussion(long themeId, String title, Comment headerComment) {
-		Theme theme = themes.findById(themeId).orElseThrow(() -> 
-			new DBEntryNotFoundException("cannot add discussion because theme with id: %d was not found"
-					.formatted(themeId)));
-		
-		Discussion discussion = new Discussion(title, headerComment);
-		comments.save(headerComment);
+	public void addDiscussion(DiscussionDTO discussionDTO){
+		Discussion discussion = mapper.map(discussionDTO, Discussion.class);
+		comments.save(discussion.getHeaderComment());
 		discussions.save(discussion);
+		
+		Theme theme = this.getThemeById(discussionDTO.getThemeId());
 		theme.getDiscussions().add(discussion);
+		themes.save(theme);
 	}
 
 	@Override
-	public void addCommentReply(CommentDTO commentDTO) {
-		Comment question = comments.findById(commentDTO.getQuestionCommentId()).orElseThrow(() -> 
-			new DBEntryNotFoundException("cannot reply to comment because comment with id: %d is not found"
-					.formatted(commentDTO.getQuestionCommentId())));
+	public void replyToComment(CommentDTO commentDTO) {		
+		List<Comment> questions = commentDTO.getRepliedCommentsAsIdList()
+			.stream()
+			.map(questionId -> comments.findById(questionId).orElseThrow(() ->
+				new DBEntryNotFoundException(
+					"cannot reply to comment because comment with id: %d was not found"
+					.formatted(questionId))
+			))
+			.toList();
 		
 		Comment answer = mapper.map(commentDTO, Comment.class);
-		
 		comments.save(answer);
-		question.getReplies().add(answer);
+		
+		questions.forEach(question -> {
+			question.getReplies().add(answer);
+			comments.save(question);
+		});
 	}
 	
 	@Override
@@ -92,7 +100,8 @@ public class DBEntityServiceImpl implements DBEntityService {
 		if(themes.existsById(themeId)) {
 			themes.deleteById(themeId);
 		} else {
-			throw new DBEntryNotFoundException("theme with id: %d was not found".formatted(themeId));
+			throw new DBEntryNotFoundException("theme with id: %d was not found"
+					.formatted(themeId));
 		}
 	}
 	
@@ -121,7 +130,7 @@ public class DBEntityServiceImpl implements DBEntityService {
 		Discussion discussion = getDiscussionById(discussionId);
 		
 		Map<Comment, List<Long>> result = 
-				new TreeMap<>((c1, c2) -> c1.getTs().compareTo(c2.getTs()));
+				new TreeMap<>((c1, c2) -> Long.compare(c1.getId(), c2.getId()));
 		
 		Stack<Comment> stack = new Stack<>();
 		stack.push(discussion.getHeaderComment());
@@ -133,9 +142,7 @@ public class DBEntityServiceImpl implements DBEntityService {
 				if(result.containsKey(c2)) {
 					result.get(c2).add(c1.getId());
 				} else {
-					List<Long> list = new ArrayList<>();
-					list.add(c1.getId());
-					result.put(c2, list);
+					result.put(c2, new ArrayList<>(List.of(c1.getId())));
 				}
 				
 				stack.push(c2);

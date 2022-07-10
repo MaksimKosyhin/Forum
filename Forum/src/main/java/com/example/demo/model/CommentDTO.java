@@ -1,29 +1,27 @@
 package com.example.demo.model;
 
-import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 public class CommentDTO {
 	private long discussionId;
 	
-	private long questionCommentId;
-	
-	private Timestamp ts;
+	// 12;333;9;
+	@Pattern(regexp = "(\\d+;)*")
+	private String repliedComments;
 	
 	@NotBlank(message = "message must not be blank")
 	private String msg;
 	
-	private String img_location;
-	
 	public CommentDTO() {}
-	
-	public CommentDTO(long discussionId, long questionCommentId, Timestamp ts, String msg, String img_location) {
+
+	public CommentDTO(long discussionId, String repliedComments, String msg) {
 		this.discussionId = discussionId;
-		this.questionCommentId = questionCommentId;
-		this.ts = ts;
+		this.repliedComments = repliedComments;
 		this.msg = msg;
-		this.img_location = img_location;
 	}
 
 	public long getDiscussionId() {
@@ -34,20 +32,19 @@ public class CommentDTO {
 		this.discussionId = discussionId;
 	}
 
-	public long getQuestionCommentId() {
-		return questionCommentId;
+	public List<Long> getRepliedCommentsAsIdList() {	
+		return Arrays.stream(repliedComments.split(";"))
+			.mapToLong(Long::valueOf)
+			.boxed()
+			.toList();
+	}
+	
+	public String getRepliedComments() {
+		return repliedComments;
 	}
 
-	public void setQuestionCommentId(long questionCommentId) {
-		this.questionCommentId = questionCommentId;
-	}
-
-	public Timestamp getTs() {
-		return ts;
-	}
-
-	public void setTs(Timestamp ts) {
-		this.ts = ts;
+	public void setRepliedComments(String repliedComments) {
+		this.repliedComments = repliedComments;
 	}
 
 	public String getMsg() {
@@ -56,13 +53,5 @@ public class CommentDTO {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
-	}
-
-	public String getImg_location() {
-		return img_location;
-	}
-
-	public void setImg_location(String img_location) {
-		this.img_location = img_location;
 	}
 }

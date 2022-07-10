@@ -11,9 +11,16 @@ public class DiscussionDTO {
 	@NotBlank(message = "discussion title must not be blank")
 	private String title;
 	
-	private Comment headerComment;
+	private String msg;
 	
 	public DiscussionDTO(){}
+
+	public DiscussionDTO(long themeId, String title,
+			String msg) {
+		this.themeId = themeId;
+		this.title = title;
+		this.msg = msg;
+	}
 
 	public long getThemeId() {
 		return themeId;
@@ -31,17 +38,17 @@ public class DiscussionDTO {
 		this.title = title;
 	}
 
-	public Comment getHeaderComment() {
-		return headerComment;
+	public String getMsg() {
+		return msg;
 	}
 
-	public void setHeaderComment(Comment headerComment) {
-		this.headerComment = headerComment;
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(headerComment, themeId, title);
+		return Objects.hash(msg, themeId, title);
 	}
 
 	@Override
@@ -53,12 +60,11 @@ public class DiscussionDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		DiscussionDTO other = (DiscussionDTO) obj;
-		return Objects.equals(headerComment, other.headerComment) && themeId == other.themeId
-				&& Objects.equals(title, other.title);
+		return Objects.equals(msg, other.msg) && themeId == other.themeId && Objects.equals(title, other.title);
 	}
 
 	@Override
 	public String toString() {
-		return "DiscussionDTO [themeId=" + themeId + ", title=" + title + ", headerComment=" + headerComment + "]";
+		return "DiscussionDTO [themeId=" + themeId + ", title=" + title + ", msg=" + msg + "]";
 	}
 }

@@ -25,43 +25,50 @@ public class ForumController {
 	@GetMapping
 	public String indexPage(Model model) {
 		model.addAttribute("themes", service.getThemes());
+		model.addAttribute("theme", new Theme());
+		
 		return "index";
 	}
 	
-	@GetMapping("/themes/{id}")
-	public String getThemeById(@PathVariable long id, Model model) {
-		model.addAttribute("theme", service.getThemeById(id));
+	@GetMapping("/themes/{themeId}")
+	public String getThemeById(@PathVariable long themeId, Model model) {
+		model.addAttribute("theme", service.getThemeById(themeId));
+		model.addAttribute("discussion", new DiscussionDTO());
+		
 		return "theme";
 	}
 	
-	@GetMapping("/discussions/{id}")
-	public String getDiscussionById(@PathVariable long id, Model model) {
-		model.addAttribute("comments", service.getComments(id));
+	@GetMapping("/discussions/{discussionId}")
+	public String getDiscussionById(@PathVariable long discussionId, Model model) {
+		model.addAttribute("discussion", service.getDiscussionById(discussionId));
+		model.addAttribute("comments", service.getComments(discussionId));
+		model.addAttribute("comment", new CommentDTO());
+		
 		return "discussion";
 	}
 	
 	@PostMapping("/themes")
-	public String createTheme(@Valid @ModelAttribute Theme theme) {
+	public String createTheme(@ModelAttribute @Valid Theme theme) {
 		service.addTheme(theme);
-		return "redirect:/themes";
+		return "redirect:/";
 	}
 	
 	@PostMapping("/discussions")
-	public String createDiscussion(@Valid @ModelAttribute DiscussionDTO discussion) {
-		service.addDiscussion(discussion.getThemeId(), discussion.getTitle(), discussion.getHeaderComment());
+	public String createDiscussion(@ModelAttribute @Valid DiscussionDTO discussion){
+		service.addDiscussion(discussion);
 		return "redirect:/themes/%d".formatted(discussion.getThemeId());
 	}
 	
 	@PostMapping("/comments")
-	public String createComment(@Valid @ModelAttribute CommentDTO comment) {
-		service.addCommentReply(comment);
+	public String createComment(@ModelAttribute @Valid CommentDTO comment) {
+		service.replyToComment(comment);
 		return "redirect:/discussions/%d".formatted(comment.getDiscussionId());
 	}
 	
 	@DeleteMapping("/themes/{id}")
-	public String deleteTheme(@PathVariable long id) {
-		service.deleteTheme(id);
-		return "redirect:/index";
+	public String deleteTheme(@PathVariable long themeId) {
+		service.deleteTheme(themeId);
+		return "redirect:/";
 	}
 	
 	@DeleteMapping("/discussions/{themeId}/{discussionId}")

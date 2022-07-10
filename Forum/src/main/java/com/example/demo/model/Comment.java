@@ -1,7 +1,8 @@
 package com.example.demo.model;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,33 +12,36 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 @Entity
-public class Comment {
+public class Comment{
+	@Transient
+	private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	private Timestamp ts;
+	private Timestamp dateCreated;
 	
 	@Column(columnDefinition = "text")
 	private String msg;
-	
-	private String img_location;
 
 	@ManyToMany
-	private List<Comment> replies = new ArrayList<>();
+	private List<Comment> replies;
 	
 	public Comment() {}
-	
-	public Comment(Timestamp ts, String msg, String img_location) {
-		this.ts = ts;
+
+	public Comment(Timestamp dateCreated, String msg) {
+		this.dateCreated = dateCreated;
 		this.msg = msg;
-		this.img_location = img_location;
 	}
-	
-	public List<Comment> getReplies() {
-		return replies;
+
+	public Comment(Timestamp dateCreated, String msg, List<Comment> replies) {
+		this.dateCreated = dateCreated;
+		this.msg = msg;
+		this.replies = replies;
 	}
 
 	public long getId() {
@@ -47,13 +51,13 @@ public class Comment {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
-	public Timestamp getTs() {
-		return ts;
+
+	public LocalDateTime getDateCreated() {
+		return dateCreated.toLocalDateTime();
 	}
 
-	public void setTs(Timestamp ts) {
-		this.ts = ts;
+	public void setDateCreateed(Timestamp dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 
 	public String getMsg() {
@@ -64,17 +68,13 @@ public class Comment {
 		this.msg = msg;
 	}
 
-	public String getImg_location() {
-		return img_location;
+	public List<Comment> getReplies() {
+		return replies;
 	}
 
-	public void setImg_location(String img_location) {
-		this.img_location = img_location;
-	}
-	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, img_location, msg, ts);
+		return Long.hashCode(id);
 	}
 
 	@Override
@@ -86,12 +86,12 @@ public class Comment {
 		if (getClass() != obj.getClass())
 			return false;
 		Comment other = (Comment) obj;
-		return id == other.id && Objects.equals(img_location, other.img_location) && Objects.equals(msg, other.msg)
-				&& Objects.equals(ts, other.ts);
+		return id == other.id;
 	}
 
 	@Override
 	public String toString() {
-		return "Comment [id=" + id + ", ts=" + ts + ", msg=" + msg + ", img_location=" + img_location;
+		return "Comment [id=" + id + ", dateCreated=" + dateCreated + ", msg=" + msg + ", replies=" + replies + "]";
 	}
+	
 }

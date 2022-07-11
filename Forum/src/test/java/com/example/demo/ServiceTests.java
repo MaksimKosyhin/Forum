@@ -5,9 +5,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -123,14 +120,22 @@ public class ServiceTests {
 	public void canAddReplyToComment() {
 		//given
 		long id = 1;
-		CommentDTO c1 = new CommentDTO(-1, "" + id, "test1");
+		
+		Discussion d = new Discussion();
+		
+		CommentDTO c1 = new CommentDTO(id, "" + id, "test1");
+		
 		Comment c2 = new Comment(null, "test2", new ArrayList<>());
 		c2.setId(1);
+		d.setHeaderComment(c2);
+		
 		Comment c3 = new Comment(null, "test1", new ArrayList<>());
 		c3.setId(2);
 		
+		given(discussions.findById(id)).willReturn(Optional.of(d));
 		given(comments.findById(id)).willReturn(Optional.of(c2));
 		given(mapper.map(c1, Comment.class)).willReturn(c3);
+		
 		//when
 		service.replyToComment(c1);
 		

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head> 
-    <title>Forum</title> 
+    <title th:text="${theme.title}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -27,8 +27,9 @@
      
 	    <label for="title">Enter Discussion Title: </label>
 	    <input type="text" th:field="*{title}" id="title"/>
+	    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Age Error</div>
 	    </br>
-	    <textarea th:field="*{msg}" placeholder="describe your problem"></textarea>
+	    <textarea th:field="*{msg}" placeholder="Add more details if you want"></textarea>
 	    <input type="submit" value="Send"/>
 	</form>
 </body>

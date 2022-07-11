@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +29,18 @@ public class DBEntityServiceImpl implements DBEntityService {
 	
 	private ModelMapper mapper;
 	
+	private Function<String, List<Long>> repliesConverter;
+	
 	@Autowired
-	public DBEntityServiceImpl(ThemeRepository themes, DiscussionRepository discussions,
-			CommentRepository comments, ModelMapper mapper) {
-
+	public DBEntityServiceImpl(ThemeRepository themes, DiscussionRepository discussions, CommentRepository comments,
+			ModelMapper mapper, Function<String, List<Long>> repliesConverter) {
 		this.themes = themes;
 		this.discussions = discussions;
 		this.comments = comments;
 		this.mapper = mapper;
+		this.repliesConverter = repliesConverter;
 	}
-	
+
 	@Override
 	public List<Theme> getThemes() {
 		return themes.findAll();
@@ -77,16 +80,49 @@ public class DBEntityServiceImpl implements DBEntityService {
 
 	@Override
 	public void replyToComment(CommentDTO commentDTO) {		
-		List<Comment> questions = commentDTO.getRepliedCommentsAsIdList()
-			.stream()
-			.map(questionId -> comments.findById(questionId).orElseThrow(() ->
-				new DBEntryNotFoundException(
-					"cannot reply to comment because comment with id: %d was not found"
-					.formatted(questionId))
-			))
-			.toList();
+		Discussion discussion = this.getDiscussionById(commentDTO.getDiscussionId());
+		List<Comment> comments = this.getComments(discussion);
+		List<Comment> questions = this.getComments(commentDTO);
 		
-		Comment answer = mapper.map(commentDTO, Comment.class);
+		if(comments.containsAll(questions)) {
+			this.saveComment(mapper.map(commentDTO, Comment.class), 
+					questions.size() == 0 ? List.of(discussion.getHeaderComment()) : questions);
+		} else {
+			throw new DBEntryNotFoundException(
+					"Some comments this one replies to are not found in discussion: %s"
+						.formatted(discussion.getTitle()));
+		}
+	}
+	
+	private List<Comment> getComments(CommentDTO commentDTO) {
+		return repliesConverter.apply(commentDTO.getRepliedComments())
+			.stream()
+			.map(commentId -> comments.findById(commentId).orElseThrow(() -> 
+				new DBEntryNotFoundException(
+					"comment with id: %d was not found"
+					.formatted(commentId))))
+			.toList();
+	}
+	
+	private List<Comment> getComments(Discussion discussion) {
+		List<Comment> comments = new ArrayList<>();
+		
+		Stack<Comment> stack = new Stack<>();
+		stack.push(discussion.getHeaderComment());
+		
+		while(!stack.empty()) {
+			Comment c1 = stack.pop();
+			comments.add(c1);
+			
+			for(Comment c2: c1.getReplies()) {
+				stack.push(c2);
+			}
+		}
+		
+		return comments;
+	}
+	
+	private void saveComment(Comment answer, List<Comment> questions) {
 		comments.save(answer);
 		
 		questions.forEach(question -> {

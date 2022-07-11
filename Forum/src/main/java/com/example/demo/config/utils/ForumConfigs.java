@@ -2,6 +2,10 @@ package com.example.demo.config.utils;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -17,6 +21,15 @@ import com.example.demo.model.DiscussionDTO;
 @Configuration
 public class ForumConfigs {
 
+	@Bean
+	public Function<String, List<Long>> repliesConverter() {
+		return replies -> replies == "" ? Collections.emptyList() 
+				: Arrays.stream(replies.split(";"))
+					.mapToLong(Long::valueOf)
+					.boxed()
+					.toList();
+	}
+	
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();

@@ -1,16 +1,13 @@
 package com.example.demo.model;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+
+import com.example.demo.config.utils.CommentReplies;
 
 public class CommentDTO {
 	private long discussionId;
 	
-	// 12;333;9;
-	@Pattern(regexp = "(\\d+;)*")
+	@CommentReplies
 	private String repliedComments;
 	
 	@NotBlank(message = "message must not be blank")
@@ -30,13 +27,6 @@ public class CommentDTO {
 
 	public void setDiscussionId(long discussionId) {
 		this.discussionId = discussionId;
-	}
-
-	public List<Long> getRepliedCommentsAsIdList() {	
-		return Arrays.stream(repliedComments.split(";"))
-			.mapToLong(Long::valueOf)
-			.boxed()
-			.toList();
 	}
 	
 	public String getRepliedComments() {

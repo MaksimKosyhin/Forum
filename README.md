@@ -1,5 +1,5 @@
 # Forum
-Anonymous forum where users can create their discussion and reply to another user's discussions  
+Anonymous forum where users can create their discussion and reply to another users' discussions  
 
 ## Forum Structure 
 The forum consists of themes. Theme is a general description of what you can discuss in it (e.g. sport, programming, cooking).

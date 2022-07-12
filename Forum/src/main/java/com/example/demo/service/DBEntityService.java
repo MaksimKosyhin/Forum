@@ -26,13 +26,11 @@ public interface DBEntityService {
 	
 	public void switchDiscussionClosing(long discussionId);
 	
-	public void switchCommentClosing(long commentId);
-	
 	public void deleteTheme(long themeId);
 	
 	public void deleteDiscussion(long discussionId);
 	
-	public void deleteComment(long commentId);
+	public void deleteComment(long discussionId, long commentId);
 	
 	public Map<Comment, List<Long>> getComments(long discussionId);
 }

@@ -102,7 +102,7 @@ public class ForumController {
 	@PutMapping("themes/{themeId}")
 	public String updateTheme(@PathVariable long themeId) {
 		service.switchThemeClosing(themeId);
-		return "redirect:/themes/%d".formatted(themeId);
+		return "redirect:/";
 	}
 	
 	@PutMapping("/discussions/{themeId}/{discussionId}")
@@ -111,13 +111,7 @@ public class ForumController {
 		return "redirect:/themes/%d".formatted(themeId);
 	}
 	
-	@PutMapping("/comments/{discussionId}/{commentId}")
-	public String updateComment(@PathVariable long discussionId, @PathVariable long commentId) {
-		service.switchCommentClosing(commentId);
-		return "redirect/:discussions/%d".formatted(discussionId);
-	}
-	
-	@DeleteMapping("/themes/{id}")
+	@DeleteMapping("/themes/{themeId}")
 	public String deleteTheme(@PathVariable long themeId) {
 		service.deleteTheme(themeId);
 		return "redirect:/";
@@ -131,7 +125,7 @@ public class ForumController {
 	
 	@DeleteMapping("/comments/{discussionId}/{commentId}")
 	public String deleteComment(@PathVariable long discussionId, @PathVariable long commentId) {
-		service.deleteComment(commentId);
-		return "redirect/:discussions/%d".formatted(discussionId);
+		service.deleteComment(discussionId, commentId);
+		return "redirect:/discussions/%d".formatted(discussionId);
 	}
 }

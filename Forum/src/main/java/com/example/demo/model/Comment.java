@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Comment{
 	@Id
@@ -25,6 +28,7 @@ public class Comment{
 	private boolean closed;
 	
 	@ManyToMany
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Comment> replies;
 	
 	public Comment() {}

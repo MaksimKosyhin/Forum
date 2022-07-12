@@ -19,18 +19,28 @@
     		<p style="color: blue;" th:text="${entry.key.id} + ' >> ' + ${entry.key.dateCreated}"></p>
     		
     		<table>
-    			<tr th:each="respondedTo : ${entry.value}">
+    			<tr>
     				<td>
-    					<span style="color: green;" th:text="${respondedTo}"></span>
+    					Replied To:
+    				</td>
+    			
+    				<td th:each="repliedTo : ${entry.value}">
+    					<span style="color: green;" th:text="${repliedTo} + ','"></span>
     				</td>
     			</tr>
     		</table>
     		
     		<p th:text="${entry.key.msg}"></p>
+    		
+    		<form th:method="DELETE" th:action="@{/comments/{discussionId}/{commentId}
+				(discussionId=${discussion.id}, commentId=${entry.key.id})}">
+						
+				<input type="submit" value="Delete"/> 
+			</form>
     	</div>
     </div>
     
-    <form th:method="POST" th:action="@{/comments}" th:object="${comment}">
+    <form th:unless="${discussion.closed}" th:method="POST" th:action="@{/comments}" th:object="${comment}">
     	<input type="hidden" name="discussionId" th:value="${discussion.id}"/>
 	    <label for="reply">Reply To: </label>
 	    <input type="text" th:field="*{repliedComments}" id="reply"/>

@@ -8,13 +8,31 @@
     <h1>Welcome</h1>
     
     <div th:each = "theme : ${themes}">
-		<p> <a th:method="GET" th:href="@{/themes/{id}(id=${theme.id})}" th:text="${theme.title}"></a> </p>
+		<p> 
+			<a th:method="GET" th:href="@{/themes/{id}(id=${theme.id})}" th:text="${theme.title}"></a>
+			<span th:if="${theme.closed}" style="color: brown;">[Closed]</span>
+		</p>
+		
+		<table>
+			<tr>
+				<td>
+					<form th:method="PUT" th:action="@{/themes/{id}(id=${theme.id})}">
+						<input type="submit" th:value="${theme.closed} ? 'Unclose' : 'Close'"/> 
+					</form>
+				</td>
+				
+				<td>
+					<form th:method="DELETE" th:action="@{/themes/{id}(id=${theme.id})}">
+						<input type="submit" value="Delete"/> 
+					</form>
+				</td>
+			</tr>
+		</table>
     </div>
     
     <form th:method="POST" th:action="@{/themes}" th:object="${theme}">
 	    <label for="title">Enter Theme Title: </label>
 	    <input type="text" th:field="*{title}" id="title"/>
-	    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
 	    <input type="submit" value="Send"/>
 	</form>
     

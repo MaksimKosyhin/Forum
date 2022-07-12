@@ -135,22 +135,14 @@ public class DBEntityServiceImpl implements DBEntityService {
 	public void switchThemeClosing(long themeId) {
 		Theme theme = this.getThemeById(themeId);
 		theme.setClosed(theme.isClosed() ? false : true);
+		themes.save(theme);
 	}
 
 	@Override
 	public void switchDiscussionClosing(long discussionId) {
 		Discussion discussion = this.getDiscussionById(discussionId);
 		discussion.setClosed(discussion.isClosed() ? false : true);
-	}
-
-	@Override
-	public void switchCommentClosing(long commentId) {
-		Comment comment = comments.findById(commentId)
-			.orElseThrow(() -> 
-				new DBEntryNotFoundException("comment with id: %d was not found"
-					.formatted(commentId)));
-		
-		comment.setClosed(comment.isClosed() ? false : true);
+		discussions.save(discussion);
 	}
 	
 	@Override
@@ -174,15 +166,23 @@ public class DBEntityServiceImpl implements DBEntityService {
 	}
 
 	@Override
-	public void deleteComment(long commentId) {
-		if(comments.existsById(commentId)) {
-			comments.deleteById(commentId);
-		} else {
-			throw new DBEntryNotFoundException("comment with id: %d was not found"
-					.formatted(commentId));
-		}
+	public void deleteComment(long discussionId, long commentId) {
+		Comment toDelete = comments.findById(commentId)
+				.orElseThrow(() ->
+				new DBEntryNotFoundException(
+						"comment with id: %d was not found"
+						.formatted(commentId))
+				);
+		
+		this.getComments(this.getDiscussionById(discussionId))
+			.forEach(comment -> {
+				comment.getReplies().remove(toDelete);
+				comments.save(comment);
+			});
+		
+		comments.deleteById(commentId);
 	}
-
+	
 	@Override
 	public Map<Comment, List<Long>> getComments(long discussionId) {
 		Discussion discussion = getDiscussionById(discussionId);

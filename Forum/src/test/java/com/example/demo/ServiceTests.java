@@ -6,10 +6,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 import static org.mockito.BDDMockito.given;
 
@@ -39,6 +41,7 @@ public class ServiceTests {
 	@Mock private CommentRepository comments;
 	
 	@Mock private ModelMapper mapper;
+	@Mock private Function<String, List<Long>> repliesConverter;
 	
 	@InjectMocks
 	@Autowired
@@ -135,7 +138,7 @@ public class ServiceTests {
 		given(discussions.findById(id)).willReturn(Optional.of(d));
 		given(comments.findById(id)).willReturn(Optional.of(c2));
 		given(mapper.map(c1, Comment.class)).willReturn(c3);
-		
+		given(repliesConverter.apply(c1.getRepliedComments())).willReturn(List.of(id));
 		//when
 		service.replyToComment(c1);
 		
@@ -177,14 +180,23 @@ public class ServiceTests {
 	public void canDeleteComment() {
 		//given
 		long id = 1;
-		given(comments.existsById(id)).willReturn(true);
+		Comment c1 = new Comment(null, "header", new ArrayList<>());
+		Comment c2 = new Comment(null, "toDelete", Collections.emptyList());
+		c1.getReplies().add(c2);
+		
+		Discussion d = new Discussion("", c1);
+		
+		given(discussions.findById(id)).willReturn(Optional.of(d));
+		given(comments.findById(id)).willReturn(Optional.of(c2));
+		
 		
 		//when
 		doNothing().when(comments).deleteById(id);
-		service.deleteComment(id);
+		service.deleteComment(id, id);
 		
 		//then
 		verify(comments, times(1)).deleteById(id);
+		assertThat(c1.getReplies()).hasSize(0);
 	}
 	
 	@Test

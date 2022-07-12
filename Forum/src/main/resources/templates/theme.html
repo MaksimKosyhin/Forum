@@ -17,17 +17,38 @@
 				th:href="@{/discussions/{discussionId}(discussionId=${discussion.id})}" 
 				th:text="${discussion.title} + ' >> ' + ${discussion.headerComment.dateCreated}">
 			</a> 
+			
+			<span th:if="${discussion.closed}" style="color: brown;">[Closed]</span>
 		</p>
+		
+		<table>
+			<tr>
+				<td>
+					<form th:method="PUT" th:action="@{/discussions/{themeId}/{discussionId}
+						(themeId=${theme.id}, discussionId=${discussion.id})}">
+						
+						<input type="submit" th:value="${discussion.closed} ? 'Unclose' : 'Close'"/> 
+					</form>
+				</td>
+				
+				<td>
+					<form th:method="DELETE" th:action="@{/discussions/{themeId}/{discussionId}
+						(themeId=${theme.id}, discussionId=${discussion.id})}">
+						
+						<input type="submit" value="Delete"/> 
+					</form>
+				</td>
+			</tr>
+		</table>
 		
 		<p th:text="${discussion.headerComment.msg}">
     </div>
     
-     <form th:method="POST" th:action="@{/discussions}" th:object="${discussion}">
+     <form th:unless="${theme.closed}" th:method="POST" th:action="@{/discussions}" th:object="${discussion}">
      	<input type="hidden" name="themeId" th:value="${theme.id}"/>
      
 	    <label for="title">Enter Discussion Title: </label>
 	    <input type="text" th:field="*{title}" id="title"/>
-	    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Age Error</div>
 	    </br>
 	    <textarea th:field="*{msg}" placeholder="Add more details if you want"></textarea>
 	    <input type="submit" value="Send"/>

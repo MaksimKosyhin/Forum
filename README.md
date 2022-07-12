@@ -3,7 +3,7 @@ Anonymous forum where users can create their discussion and reply to another use
 
 ## Forum Structure 
 The forum consists of themes. Theme is a general description of what you can discuss in it (e.g. sport, programming, cooking).
-Under each theme users can create their discussions (for example, uder programming theme user can create discussion as "What programming language to choose") 
+Under each theme users can create their discussions (for example, uder programming theme user can create discussions as "What programming language to choose") 
 and other users can reply to them.
 
 ## Functionality

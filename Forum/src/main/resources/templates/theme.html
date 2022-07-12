@@ -21,6 +21,8 @@
 			<span th:if="${discussion.closed}" style="color: brown;">[Closed]</span>
 		</p>
 		
+		<p th:text="${discussion.headerComment.msg}">
+		
 		<table>
 			<tr>
 				<td>
@@ -40,8 +42,6 @@
 				</td>
 			</tr>
 		</table>
-		
-		<p th:text="${discussion.headerComment.msg}">
     </div>
     
      <form th:unless="${theme.closed}" th:method="POST" th:action="@{/discussions}" th:object="${discussion}">

@@ -21,7 +21,7 @@
     		<table>
     			<tr>
     				<td>
-    					Replied To:
+    					<span style="color: green;">Replied To:</span>
     				</td>
     			
     				<td th:each="repliedTo : ${entry.value}">
@@ -40,12 +40,16 @@
     	</div>
     </div>
     
+    </br>
+    
     <form th:unless="${discussion.closed}" th:method="POST" th:action="@{/comments}" th:object="${comment}">
     	<input type="hidden" name="discussionId" th:value="${discussion.id}"/>
-	    <label for="reply">Reply To: </label>
+	    <label for="reply">Enter [message id]; (e.g. 1;12;237;) to reply: </label>
+	    </br>
 	    <input type="text" th:field="*{repliedComments}" id="reply"/>
 	    </br>
 		<label for="answer">Comment: </label>
+		</br>
 		<textarea th:field="*{msg}" placeholder="leave a comment" id="answer"/>
 	    <input type="submit" value="Send"/>
 	</form>

@@ -22,6 +22,8 @@ public class Theme {
 	@NotBlank(message = "theme title must not be blank")
 	private String title;
 	
+	private boolean closed;
+	
 	@OneToMany
 	@JoinColumn(name = "theme_id", referencedColumnName = "id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -53,6 +55,14 @@ public class Theme {
 		this.title = title;
 	}
 	
+	public boolean isClosed() {
+		return closed;
+	}
+
+	public void setClosed(boolean closed) {
+		this.closed = closed;
+	}
+
 	public List<Discussion> getDiscussions() {
 		return discussions;
 	}

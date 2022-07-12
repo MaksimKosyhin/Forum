@@ -22,6 +22,12 @@ public interface DBEntityService {
 	
 	public void replyToComment(CommentDTO comment);
 	
+	public void switchThemeClosing(long themeId);
+	
+	public void switchDiscussionClosing(long discussionId);
+	
+	public void switchCommentClosing(long commentId);
+	
 	public void deleteTheme(long themeId);
 	
 	public void deleteDiscussion(long discussionId);

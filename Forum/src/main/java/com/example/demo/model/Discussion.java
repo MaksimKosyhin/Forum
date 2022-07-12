@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -16,7 +17,10 @@ public class Discussion {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
 	
+	@NotBlank(message = "discussion title must not be blank")
 	private String title;
+	
+	private boolean closed;
 	
 	@OneToOne
 	@JoinColumn(name = "header_comment_id", referencedColumnName = "id")
@@ -42,6 +46,14 @@ public class Discussion {
 		this.title = title;
 	}
 
+	public boolean isClosed() {
+		return closed;
+	}
+
+	public void setClosed(boolean closed) {
+		this.closed = closed;
+	}
+	
 	public Comment getHeaderComment() {
 		return headerComment;
 	}
@@ -49,7 +61,7 @@ public class Discussion {
 	public void setHeaderComment(Comment headerComment) {
 		this.headerComment = headerComment;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return Long.hashCode(id);

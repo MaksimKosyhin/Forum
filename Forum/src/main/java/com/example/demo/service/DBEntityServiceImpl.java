@@ -132,6 +132,28 @@ public class DBEntityServiceImpl implements DBEntityService {
 	}
 	
 	@Override
+	public void switchThemeClosing(long themeId) {
+		Theme theme = this.getThemeById(themeId);
+		theme.setClosed(theme.isClosed() ? false : true);
+	}
+
+	@Override
+	public void switchDiscussionClosing(long discussionId) {
+		Discussion discussion = this.getDiscussionById(discussionId);
+		discussion.setClosed(discussion.isClosed() ? false : true);
+	}
+
+	@Override
+	public void switchCommentClosing(long commentId) {
+		Comment comment = comments.findById(commentId)
+			.orElseThrow(() -> 
+				new DBEntryNotFoundException("comment with id: %d was not found"
+					.formatted(commentId)));
+		
+		comment.setClosed(comment.isClosed() ? false : true);
+	}
+	
+	@Override
 	public void deleteTheme(long themeId) {
 		if(themes.existsById(themeId)) {
 			themes.deleteById(themeId);

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.example.demo.config.exceptions.DBEntryNotFoundException;
 import com.example.demo.model.CommentDTO;
@@ -96,6 +97,24 @@ public class ForumController {
 			
 			return "redirect:/discussions/%d".formatted(comment.getDiscussionId());
 		}
+	}
+	
+	@PutMapping("themes/{themeId}")
+	public String updateTheme(@PathVariable long themeId) {
+		service.switchThemeClosing(themeId);
+		return "redirect:/themes/%d".formatted(themeId);
+	}
+	
+	@PutMapping("/discussions/{themeId}/{discussionId}")
+	public String updateDiscussion(@PathVariable long themeId, @PathVariable long discussionId) {
+		service.switchDiscussionClosing(discussionId);
+		return "redirect:/themes/%d".formatted(themeId);
+	}
+	
+	@PutMapping("/comments/{discussionId}/{commentId}")
+	public String updateComment(@PathVariable long discussionId, @PathVariable long commentId) {
+		service.switchCommentClosing(commentId);
+		return "redirect/:discussions/%d".formatted(discussionId);
 	}
 	
 	@DeleteMapping("/themes/{id}")

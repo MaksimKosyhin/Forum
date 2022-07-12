@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,13 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.Transient;
 
 @Entity
 public class Comment{
-	@Transient
-	private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
@@ -27,6 +22,8 @@ public class Comment{
 	@Column(columnDefinition = "text")
 	private String msg;
 
+	private boolean closed;
+	
 	@ManyToMany
 	private List<Comment> replies;
 	
@@ -67,6 +64,14 @@ public class Comment{
 		this.msg = msg;
 	}
 
+	public boolean isClosed() {
+		return closed;
+	}
+
+	public void setClosed(boolean closed) {
+		this.closed = closed;
+	}
+	
 	public List<Comment> getReplies() {
 		return replies;
 	}

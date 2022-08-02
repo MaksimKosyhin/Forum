@@ -10,49 +10,45 @@
     	<p style="color: blue;" 
     			th:text="${discussion.headerComment.id} + ' >> ' + ${discussion.headerComment.dateCreated}"></p>
     	<p th:text="${discussion.headerComment.msg}"></p>
-    	
-    	<a th:method="GET" th:href="@{/}">Back to Themes </a>
     </div>
     
     <div>
-    	<div th:each="entry : ${comments}">
-    		<p style="color: blue;" th:text="${entry.key.id} + ' >> ' + ${entry.key.dateCreated}"></p>
-    		
-    		<table>
-    			<tr>
-    				<td>
-    					<span style="color: green;">Replied To:</span>
-    				</td>
-    			
-    				<td th:each="repliedTo : ${entry.value}">
-    					<span style="color: green;" th:text="${repliedTo} + ','"></span>
-    				</td>
-    			</tr>
-    		</table>
-    		
-    		<p th:text="${entry.key.msg}"></p>
-    		
-    		<form th:method="DELETE" th:action="@{/comments/{discussionId}/{commentId}
-				(discussionId=${discussion.id}, commentId=${entry.key.id})}">
-						
-				<input type="submit" value="Delete"/> 
-			</form>
-    	</div>
+    	<a th:method="GET" th:href="@{/}">Back to Themes </a>
+    	</br>
+    	<a th:method="GET" th:href="@{/themes/{id}(id=${themeId})}">Back to Current Theme </a>
     </div>
     
-    </br>
-    
-    <form th:unless="${discussion.closed}" th:method="POST" th:action="@{/comments}" th:object="${comment}">
-    	<input type="hidden" name="discussionId" th:value="${discussion.id}"/>
-	    <label for="reply">Enter [message id]; (e.g. 1;12;237;) to reply: </label>
-	    </br>
-	    <input type="text" th:field="*{repliedComments}" id="reply"/>
-	    </br>
-		<label for="answer">Comment: </label>
-		</br>
-		<textarea th:field="*{msg}" placeholder="leave a comment" id="answer"/>
-	    <input type="submit" value="Send"/>
-	</form>
-    
+    <div th:each="entry : ${comments}">
+    	<p style="color: blue;" th:text="${entry.key.id} + ' >> ' + ${entry.key.dateCreated}"></p>
+    		
+    	<table>
+    		<tr>
+    			<td>
+    				<span style="color: green;">Replied To:</span>
+    			</td>
+    			
+    			<td th:each="repliedTo : ${entry.value}">
+   					<span style="color: green;" th:text="${repliedTo} + ','"></span>
+   				</td>
+   			</tr>
+   		</table>
+   		
+   		<p th:text="${entry.key.msg}"></p>
+    </div>
+
+    <div th:unless="${discussion.closed}">
+	    <form th:method="POST" th:action="@{/comments}" th:object="${comment}">
+	    	<input type="hidden" name="themeId" th:value="${themeId}"/>
+	    	<input type="hidden" name="discussionId" th:value="${discussion.id}"/>
+		    <label for="reply">Enter messages' id (e.g. 1;12;237;) to reply: </label>
+		    </br>
+		    <input type="text" th:field="*{repliedComments}" id="reply"/>
+		    </br>
+			<label for="answer">Comment: </label>
+			</br>
+			<textarea th:field="*{msg}" placeholder="leave a comment" id="answer"/>
+		    <input type="submit" value="Send"/>
+		</form>
+    </div>
 </body>
 </html>

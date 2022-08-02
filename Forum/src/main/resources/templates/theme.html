@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" >
 <head> 
     <title th:text="${theme.title}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -14,7 +14,7 @@
     <div th:each = "discussion : ${theme.discussions}">
 		<p> 
 			<a th:method="GET" 
-				th:href="@{/discussions/{discussionId}(discussionId=${discussion.id})}" 
+				th:href="@{/discussions/{themeId}/{discussionId}(themeId=${theme.id}, discussionId=${discussion.id})}" 
 				th:text="${discussion.title} + ' >> ' + ${discussion.headerComment.dateCreated}">
 			</a> 
 			
@@ -23,9 +23,9 @@
 		
 		<p th:text="${discussion.headerComment.msg}">
 		
-		<table>
+		<table sec:authorize="isAuthenticated()">
 			<tr>
-				<td>
+				<td sec:authorize="hasAuthority('CLOSE_DISCUSSION')">
 					<form th:method="PUT" th:action="@{/discussions/{themeId}/{discussionId}
 						(themeId=${theme.id}, discussionId=${discussion.id})}">
 						
@@ -33,7 +33,7 @@
 					</form>
 				</td>
 				
-				<td>
+				<td sec:authorize="hasAuthority('DELETE_DISCUSSION')">
 					<form th:method="DELETE" th:action="@{/discussions/{themeId}/{discussionId}
 						(themeId=${theme.id}, discussionId=${discussion.id})}">
 						
@@ -44,14 +44,16 @@
 		</table>
     </div>
     
-     <form th:unless="${theme.closed}" th:method="POST" th:action="@{/discussions}" th:object="${discussion}">
-     	<input type="hidden" name="themeId" th:value="${theme.id}"/>
-     
-	    <label for="title">Enter Discussion Title: </label>
-	    <input type="text" th:field="*{title}" id="title"/>
-	    </br>
-	    <textarea th:field="*{msg}" placeholder="Add more details if you want"></textarea>
-	    <input type="submit" value="Send"/>
-	</form>
+    <div th:unless="${theme.closed}">
+	     <form th:method="POST" th:action="@{/discussions}" th:object="${discussion}">
+	     	<input type="hidden" name="themeId" th:value="${theme.id}"/>
+	     
+		    <label for="title">Enter Discussion Title: </label>
+		    <input type="text" th:field="*{title}" id="title"/>
+		    </br>
+		    <textarea th:field="*{msg}" placeholder="Add more details if you want"></textarea>
+		    <input type="submit" value="Send"/>
+		</form>
+    </div>
 </body>
 </html>

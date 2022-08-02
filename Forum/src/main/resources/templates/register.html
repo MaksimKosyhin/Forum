@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Register</title>
+    </head>
+    <body>
+        <form th:method="POST" th:action="@{/register}" th:object="${user}">
+		    <label for="username">Enter Username: </label>
+		    <input type="text" th:field="*{username}" id="username"/>
+		    <label for="password">Enter Password: </label>
+		    <input type="text" th:field="*{password}" id="password"/>
+		    
+		    <p>Select desired role:</p>
+		    <div>
+		    	<input type="radio" id="admin" name="userRole" value="ADMIN"/>
+		    	<label for="admin">Admin</label>
+		    	<input type="radio" id="moderator" name="userRole" value="MODERATOR"/>
+		    	<label for="moderator">Moderator</label>
+		    </div>
+		    
+		    <input type="submit" value="Send"/>
+		</form>
+    </body>
+</html>

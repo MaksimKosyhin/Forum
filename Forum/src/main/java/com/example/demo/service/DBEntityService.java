@@ -30,7 +30,5 @@ public interface DBEntityService {
 	
 	public void deleteDiscussion(long discussionId);
 	
-	public void deleteComment(long discussionId, long commentId);
-	
 	public Map<Comment, List<Long>> getComments(long discussionId);
 }

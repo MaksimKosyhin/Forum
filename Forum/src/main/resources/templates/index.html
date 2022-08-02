@@ -7,21 +7,50 @@
 <body>
     <h1>Welcome</h1>
     
+    <div sec:authorize="isAnonymous()">
+    	<p>login or register to manage forum</p>
+    	<table>
+			<tr>
+				<td>
+					<form th:method="GET" th:action="@{/login}">
+						<input type="submit" value="login"/> 
+					</form>
+				</td>
+				
+				<td>
+					<form th:method="GET" th:action="@{/register}">
+						<input type="submit" value="register"/> 
+					</form>
+				</td>
+			</tr>
+		</table>
+    </div>
+    
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+    	<a th:method="GET" th:href="@{/workstaff}">See workstaff</a>
+    </div>
+    
+    <div sec:authorize="isAuthenticated()">
+    	<form th:method="GET" th:action="@{/logout}">
+			<input type="submit" value="logout"/> 
+		</form>
+    </div>
+    
     <div th:each = "theme : ${themes}">
 		<p> 
 			<a th:method="GET" th:href="@{/themes/{id}(id=${theme.id})}" th:text="${theme.title}"></a>
 			<span th:if="${theme.closed}" style="color: brown;">[Closed]</span>
 		</p>
 		
-		<table>
+		<table sec:authorize="isAuthenticated()">
 			<tr>
-				<td>
+				<td sec:authorize="hasAuthority('CLOSE_THEME')">
 					<form th:method="PUT" th:action="@{/themes/{id}(id=${theme.id})}">
 						<input type="submit" th:value="${theme.closed} ? 'Unclose' : 'Close'"/> 
 					</form>
 				</td>
 				
-				<td>
+				<td sec:authorize="hasAuthority('DELETE_THEME')">
 					<form th:method="DELETE" th:action="@{/themes/{id}(id=${theme.id})}">
 						<input type="submit" value="Delete"/> 
 					</form>
@@ -30,11 +59,12 @@
 		</table>
     </div>
     
-    <form th:method="POST" th:action="@{/themes}" th:object="${theme}">
-	    <label for="title">Enter Theme Title: </label>
-	    <input type="text" th:field="*{title}" id="title"/>
-	    <input type="submit" value="Send"/>
-	</form>
-    
+    <div sec:authorize="hasAuthority('CREATE_THEME')">
+	    <form th:method="POST" th:action="@{/themes}" th:object="${theme}">
+		    <label for="title">Enter Theme Title: </label>
+		    <input type="text" th:field="*{title}" id="title"/>
+		    <input type="submit" value="Send"/>
+		</form>
+    </div>
 </body>
 </html>

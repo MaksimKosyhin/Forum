@@ -2,9 +2,10 @@ package com.example.demo.model;
 
 import javax.validation.constraints.NotBlank;
 
-import com.example.demo.config.utils.CommentReplies;
+import com.example.demo.util.annotation.CommentReplies;
 
 public class CommentDTO {
+	private long themeId;
 	private long discussionId;
 	
 	@CommentReplies
@@ -43,5 +44,13 @@ public class CommentDTO {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+
+	public long getThemeId() {
+		return themeId;
+	}
+
+	public void setThemeId(long themeId) {
+		this.themeId = themeId;
 	}
 }

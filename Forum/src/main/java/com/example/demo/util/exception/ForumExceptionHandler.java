@@ -1,4 +1,4 @@
-package com.example.demo.config.exceptions;
+package com.example.demo.util.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ForumExceptionHandler extends ResponseEntityExceptionHandler{
 	@ExceptionHandler(value = {DBEntryNotFoundException.class})
 	public ResponseEntity<?> handleDBEntryNotFound(DBEntryNotFoundException ex, WebRequest request) {
+		return super.handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler(value = {SecurityException.class})
+	public ResponseEntity<?> handleUserAlreadyExists(SecurityException ex, WebRequest request) {
 		return super.handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 }

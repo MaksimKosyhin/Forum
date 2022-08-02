@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Work Staff</title>
+    </head>
+    <body>
+    
+    	<div>
+		    <a th:method="GET" th:href="@{/}">Back to Themes </a>
+		</div>
+    
+    	<div>
+    		<h2>
+    			<span th:text="${currentUser.username} + '(' + ${currentUser.userRole} + ')'" 
+    				style="color: green;"></span>
+    		</h2>
+    	</div>
+    
+        <div th:each="user : ${workstaff}" 
+        	th:unless="${user.username} == ${currentUser.username}">
+        	
+        	<p th:text="${user.username} + '(' + ${user.userRole} + ')'"></p>
+        	
+        	<table> 
+				<tr>
+					<td>
+						<form th:method="PUT" th:action="@{/workstaff/{id}(id=${user.id})}">
+							<input type="submit" th:value="${user.roleAllowed} ? 'Close' : 'Unclose'"/> 
+						</form>
+					</td>
+					
+					<td>
+						<form th:method="DELETE" th:action="@{/workstaff/{id}(id=${user.id})}">
+							<input type="submit" value="Delete"/> 
+						</form>
+					</td>
+				</tr>
+			</table>
+        </div>
+    </body>
+</html>

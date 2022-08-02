@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.config.exceptions.DBEntryNotFoundException;
 import com.example.demo.model.Comment;
 import com.example.demo.model.CommentDTO;
 import com.example.demo.model.Discussion;
@@ -20,16 +19,16 @@ import com.example.demo.model.Theme;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.DiscussionRepository;
 import com.example.demo.repository.ThemeRepository;
+import com.example.demo.util.exception.DBEntryNotFoundException;
 
 @Service
 public class DBEntityServiceImpl implements DBEntityService {
-	private ThemeRepository themes;
-	private DiscussionRepository discussions;
-	private CommentRepository comments;
+	private final ThemeRepository themes;
+	private final DiscussionRepository discussions;
+	private final CommentRepository comments;
 	
-	private ModelMapper mapper;
-	
-	private Function<String, List<Long>> repliesConverter;
+	private final ModelMapper mapper;
+	private final Function<String, List<Long>> repliesConverter;
 	
 	@Autowired
 	public DBEntityServiceImpl(ThemeRepository themes, DiscussionRepository discussions, CommentRepository comments,
@@ -163,24 +162,6 @@ public class DBEntityServiceImpl implements DBEntityService {
 			throw new DBEntryNotFoundException("discussion with id: %d was not found"
 					.formatted(discussionId));
 		}
-	}
-
-	@Override
-	public void deleteComment(long discussionId, long commentId) {
-		Comment toDelete = comments.findById(commentId)
-				.orElseThrow(() ->
-				new DBEntryNotFoundException(
-						"comment with id: %d was not found"
-						.formatted(commentId))
-				);
-		
-		this.getComments(this.getDiscussionById(discussionId))
-			.forEach(comment -> {
-				comment.getReplies().remove(toDelete);
-				comments.save(comment);
-			});
-		
-		comments.deleteById(commentId);
 	}
 	
 	@Override

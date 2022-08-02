@@ -19,7 +19,7 @@ public class WorkStaff {
 	private long id;
 	@NotBlank(message = "username must not be empty")
 	private String username;
-	@Size(min = 5)
+	@Size(min = 5, message = "your password must be at least 5-characters long")
 	private String password;
 	@ExistingRole
 	private String userRole;

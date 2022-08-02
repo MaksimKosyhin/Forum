@@ -3,9 +3,32 @@
 <head> 
     <title>Forum</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+   		body {
+			background-color: #ffccb3;
+		}
+		
+		div {
+			margin:auto;
+			padding:1%;
+			width:70%;
+			border: 1px solid black;
+			background-color: #ffaa80;
+			margin-bottom: 1%;
+			position: relative
+		}
+		
+		input, textarea {
+			background-color: #ffaa99;
+		}
+		
+		a {
+			color:black;
+		}
+   	</style>
 </head>
 <body>
-    <h1>Welcome</h1>
+    <h1 style="text-align:center">Welcome</h1>
     
     <div sec:authorize="isAnonymous()">
     	<p>login or register to manage forum</p>
@@ -46,7 +69,7 @@
 			<tr>
 				<td sec:authorize="hasAuthority('CLOSE_THEME')">
 					<form th:method="PUT" th:action="@{/themes/{id}(id=${theme.id})}">
-						<input type="submit" th:value="${theme.closed} ? 'Unclose' : 'Close'"/> 
+						<input type="submit" th:value="${theme.closed} ? 'Open' : 'Close'"/> 
 					</form>
 				</td>
 				

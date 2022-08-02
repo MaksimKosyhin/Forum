@@ -2,23 +2,51 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Register</title>
+        <style>
+	   		body {
+				background-color: #ffccb3;
+			}
+			
+			div {
+				margin:auto;
+				padding:1%;
+				width:70%;
+				border: 1px solid black;
+				background-color: #ffaa80;
+				margin-bottom: 1%;
+				position: relative
+			}
+			
+			input, textarea {
+				background-color: #ffaa99;
+			}
+			
+			a {
+				color:black;
+			}
+	   	</style>
     </head>
     <body>
-        <form th:method="POST" th:action="@{/register}" th:object="${user}">
-		    <label for="username">Enter Username: </label>
-		    <input type="text" th:field="*{username}" id="username"/>
-		    <label for="password">Enter Password: </label>
-		    <input type="text" th:field="*{password}" id="password"/>
-		    
-		    <p>Select desired role:</p>
+		<form th:method="POST" th:action="@{/register}" th:object="${user}">
 		    <div>
-		    	<input type="radio" id="admin" name="userRole" value="ADMIN"/>
-		    	<label for="admin">Admin</label>
-		    	<input type="radio" id="moderator" name="userRole" value="MODERATOR"/>
-		    	<label for="moderator">Moderator</label>
+				<label for="username">Enter Username: </label>
+				<input type="text" th:field="*{username}" id="username"/>
+				<label for="password">Enter Password: </label>
+			    <input type="text" th:field="*{password}" id="password"/>
+	    	</div>
+		        	
+		    <div>
+		    	<p>Select desired role:</p>
+			    
+			   	<input type="radio" id="admin" name="userRole" value="ADMIN"/>
+			   	<label for="admin">Admin</label>
+			   	<input type="radio" id="moderator" name="userRole" value="MODERATOR"/>
+			   	<label for="moderator">Moderator</label>
 		    </div>
-		    
-		    <input type="submit" value="Send"/>
+			    
+		    <div>
+		    	<input type="submit" value="Send"/>
+		    </div>
 		</form>
     </body>
 </html>

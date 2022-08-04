@@ -19,7 +19,7 @@ In discussion, users can denote comments they're replying to.
 ## Technologies used
 Spring Data JPA (with PostgreSQL), Spring Data REST, Spring Security, Thymeleaf, JUnit5.  
 
-##Screenshots of my project
+## Screenshots of my project
 
 Index page for unregistered/MODERATOR/ADMIN user.
 

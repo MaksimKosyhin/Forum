@@ -3,16 +3,18 @@ Anonymous forum where users can create their discussion and reply to another use
 
 ## Forum Structure 
 The forum consists of themes. Theme is a general description of what you can discuss in it (e.g. sport, programming, cooking).
-Under each theme users can create their discussions (for example, uder programming theme user can create discussions as "What programming language to choose") 
-and other users can reply to them.
+Under each theme users can create their discussions (for example, under programming theme user can create discussion as "What programming language to choose") 
+and other users can reply to them. 
 
 ## Functionality
-Themes, discussions, and messages to each discussion can be created and deleted. 
-If users are entering invalid data, then they're redirected to page that informs them what errors they have done.  
-Users can denote what messages in discussion they are answering to.  
-Additionaly, themes and discussions can be closed. It means that users can't create discussions for a closed theme and can't post messages for a closed discussion.  
-Users don't need to be authorized to create discussions and leave comments.
+All users can create discussions and leave comments under them. Registered users perform moderation role. They can have either ADMIN or MODERATOR roles. Users with role ADMIN have all forum functionality available for them. It is: ability to create/delete/close themes and dlscussions and delete/close users with MODERATOR role. Users wiht MODERATOR role can only delete/close discussions.
+
+When theme is closed - no one can add new discussion under it. The same is for closed discussion but with comments.
+Closed registered users can`t be authorized.
+
+If users enter invalid data anywhere in the forum, they`ll be redirected to page that informs them about made errors.
+
+In discussion, users can denote comments they're replying to.
 
 ## Technologies used
-Spring Data JPA (with PostgreSQL), Spring Data REST, Thymeleaf, JUnit5.  
-Additionally used validation for user requests and model mapper for mapping between models and DTO objects.
+Spring Data JPA (with PostgreSQL), Spring Data REST, Spring Security, Thymeleaf, JUnit5.  

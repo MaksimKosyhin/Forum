@@ -18,3 +18,26 @@ In discussion, users can denote comments they're replying to.
 
 ## Technologies used
 Spring Data JPA (with PostgreSQL), Spring Data REST, Spring Security, Thymeleaf, JUnit5.  
+
+##Screenshots of my project
+
+Index page for unregistered/MODERATOR/ADMIN user.
+
+![themes](https://github.com/MaksimKosyhin/Forum/blob/img/themes.png)
+
+Theme for unregistered/MODERATOR/ADMIN user.
+First image is example of unclosed theme, the last two are closed.
+
+![theme](https://github.com/MaksimKosyhin/Forum/blob/img/theme.png)
+
+Closed and unclosed discussion.
+
+![discussion](https://github.com/MaksimKosyhin/Forum/blob/img/discussion.png)
+
+The second image show input errors made in the first.
+
+![error](https://github.com/MaksimKosyhin/Forum/blob/img/error.png)
+
+Page representing registered users.
+
+![workstaff](https://github.com/MaksimKosyhin/Forum/blob/img/workstaff.png)

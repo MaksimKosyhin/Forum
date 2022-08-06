@@ -16,7 +16,7 @@ If users enter invalid data anywhere in the forum, they`ll be redirected to page
 
 In discussion, users can denote comments they're replying to.
 
-## Technologies used
+## Used Technologies
 Spring Data JPA (with PostgreSQL), Spring Data REST, Spring Security, Thymeleaf, JUnit5.  
 
 ## Screenshots of my project

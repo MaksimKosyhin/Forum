@@ -1,7 +1,7 @@
 # Forum
 Anonymous forum where users can create their discussion and reply to another users' discussions  
 
-## Forum Structure 
+## Structure 
 The forum consists of themes. Theme is a general description of what you can discuss in it (e.g. sport, programming, cooking).
 Under each theme users can create their discussions (for example, under programming theme user can create discussion as "What programming language to choose") 
 and other users can reply to them. 
@@ -34,7 +34,7 @@ Closed and unclosed discussion.
 
 ![discussion](https://github.com/MaksimKosyhin/Forum/blob/img/discussion.png)
 
-The second image show input errors made in the first.
+The second image shows input errors made in the first.
 
 ![error](https://github.com/MaksimKosyhin/Forum/blob/img/error.png)
 
